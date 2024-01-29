@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>快做题,就是这么快!</title>
+    <link href="css/index.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+    <h2>快刷题专供</h2>
+    <div class="mainArea">
+        <div class="questionArea">
+
+        </div>
+        <div class="answerArea">
+            <div class="choose">
+
+            </div>
+        </div>
+        <div class="checkArea" id="checkControl">
+            <span class="answerTitle">答案区:</span>
+            <span class="answer"></span>
+            <p class="correctStatus"></p>
+        </div>
+    </div>
+    <div class="preAndNext">
+        <div class="pre">
+            <button class="btn">上一题</button>
+        </div>
+        <div class="check">
+            <button class="btn" id="checkBtn">检查</button>
+        </div>
+        <div class="next">
+            <button class="btn">下一题</button>
+        </div>
+    </div>
+</div>
+<script>
+    let checkControl = document.getElementById("checkControl")
+    let checkBtn = document.getElementById("checkBtn")
+    let next = document.querySelector(".next>button")
+    let questionArea = document.querySelector(".questionArea")
+    let checkAnswer = document.querySelector(".checkArea>.answer")
+    let correctStatus = document.querySelector(".correctStatus")
+    let choosingBox = document.querySelector(".answerArea>.choose")
+    let alertBox = document.querySelectorAll(".alertBox")
+    let prev = document.querySelector(".pre>button")
+    let flagAlert = false
+    let chooseSingle = null
+    let codeStatus = {
+        NO_NEXT: 611,
+        NO_PREV: 612,
+    }
+    let recordStatus = {
+        next: null,
+        prev: null
+    }
+    const initRecord = () => {
+        recordStatus.next = null
+        recordStatus.prev = null
+    }
+    const initDisplay = () => {
+        chooseSingle = null
+        if (checkControl.style.display === "none") {
+            return
+        }
+        checkControl.style.display = "none"
+    }
+    const initChoosing = () => {
+        let choosingLabel = document.querySelectorAll(".answerArea>.choose>label")
+        if (choosingLabel.length > 0) {
+            choosingLabel.forEach(i => {
+                i.checked = false
+            })
+        }
+    }
+    const fetchData = (url, ...args) => {
+        let realUrl = url
+        args.forEach(i => realUrl += i)
+        fetch(realUrl)
+            .then(res => res.json())
+            .then(res => {
+                let {code, data} = res
+                if (code === codeStatus.NO_NEXT) {
+                    recordStatus.next = code
+                } else if (code === codeStatus.NO_PREV) {
+                    recordStatus.prev = code
+                } else {
+                    initRecord()
+                }
+                console.log(res)
+                console.log(data)
+                console.log(data.data)
+                renderHTML(data.data)
+            }).catch(err => {
+            alert("报错了,请重试", "red")
+            console.log(err)
+        })
+    }
+    //渲染数据
+    const renderHTML = (data) => {
+        let {question, choose, answer} = data
+        questionArea.innerHTML = question
+        checkAnswer.innerHTML = answer
+        let matchAll = choose.matchAll(/([A-D])\.(\w+)/gm);
+        let arr = []
+        for (const matchAllElement of matchAll) {
+            arr.push(matchAllElement[0])
+        }
+        choosingBox.innerHTML = ""
+        for (let i = 0; i < arr.length; i++) {
+            let template = `
+            <label>
+                    <input type="radio" name="single" index=${i}>
+                    ${arr[i]}
+            </label>`
+            choosingBox.innerHTML += template
+        }
+        let choosingLabel = document.querySelectorAll(".answerArea>.choose>label")
+        choosingLabel.forEach(i => {
+            i.addEventListener("change", (e) => {
+                chooseSingle = arr[e.target.getAttribute("index")]
+                    .split(".")[0]
+                console.log(chooseSingle)
+            })
+        })
+    }
+    checkBtn.addEventListener("click", () => {
+        if (chooseSingle===null) {
+            alert("朋友,你忘记填答案了","skyblue")
+            return;
+        } else if (checkAnswer.innerText.toUpperCase()
+            === chooseSingle?.toUpperCase()) {
+            // alert("恭喜,做对啦", "#4CAF50")
+            correctStatus.innerText = "恭喜,做对啦"
+            correctStatus.style.color = "#4CAF50"
+        } else {
+            // alert("做错了!请看参考", "#FF0000")
+            correctStatus.innerText = "做错了!请看参考"
+            correctStatus.style.color = "#FF0000"
+        }
+        if (checkControl.style.display === "block") {
+            return
+        }
+        //TODO:控制检查
+        checkControl.style.display = "block"
+    })
+    next.addEventListener("click", () => {
+        if (recordStatus.next === codeStatus.NO_NEXT) {
+            alert("没有下一题了", "orange")
+            //提示
+            return;
+        }
+        initDisplay()
+        initChoosing()
+        fetchData("http://localhost:8080/getQuestion/", "next")
+    })
+    prev.addEventListener("click", () => {
+        if (recordStatus.prev === codeStatus.NO_PREV) {
+            alert("没有上一题了", "orange")
+            return;
+        }
+        initDisplay()
+        initChoosing()
+        fetchData("http://localhost:8080/getQuestion/", "prev")
+    })
+    const alert = (msg, bgColor = "rgba(0, 0, 0, .2)") => {
+        if (flagAlert) {//控制调用
+            return
+        }
+        flagAlert = true
+        let abx = document.createElement("div")
+        abx.className = "alertBox"
+        abx.innerHTML = msg
+        abx.style.background = bgColor
+        document.body.appendChild(abx)
+        abx.addEventListener("animationend", () => {
+            document.body.removeChild(abx)
+            flagAlert = false
+        })
+    }
+    //默认开始时调用获取第一个数据
+    fetchData("http://localhost:8080/getQuestion/", "next")
+</script>
+</body>
+</html>

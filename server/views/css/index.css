@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  background: #333333;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+li {
+  list-style: none;
+}
+.alertBox {
+  min-width: 100px;
+  max-width: 160px;
+  word-break: break-all;
+  min-height: 50px;
+  max-height: 88px;
+  font-size: 20px;
+  overflow: hidden;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadeInAndOut ease-in 3s forwards;
+}
+@keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+#app {
+  width: 500px;
+  height: 600px;
+  background: whitesmoke;
+  border-radius: 30px;
+  box-shadow: 2px 2px 2px 3px #f1ffbd;
+  position: relative;
+}
+#app h2 {
+  text-align: center;
+  padding: 7px 0;
+}
+#app .mainArea {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+#app .mainArea .questionArea {
+  width: 95%;
+  min-height: 60px;
+  max-height: 400px;
+  font-size: 30px;
+  line-height: 35px;
+  word-break: break-all;
+}
+#app .mainArea .answerArea {
+  width: 95%;
+  min-height: 30px;
+  max-height: 120px;
+  word-break: break-all;
+  padding: 16px 0;
+  margin: 10px 0;
+}
+#app .mainArea .answerArea > .choose {
+  display: flex;
+  justify-content: space-around;
+  font-size: 20px;
+  flex-wrap: wrap;
+}
+#app .mainArea .answerArea > .choose input[name="single"] {
+  width: 30px;
+  height: 20px;
+  vertical-align: middle;
+}
+#app .mainArea .checkArea {
+  width: 95%;
+  min-height: 60px;
+  max-height: 100px;
+  display: none;
+}
+#app .mainArea .checkArea .correctStatus {
+  font-size: 30px;
+}
+#app .mainArea .checkArea .answerTitle {
+  font-weight: bold;
+  font-size: 15px;
+  vertical-align: middle;
+}
+#app .mainArea .checkArea .answer {
+  color: red;
+  vertical-align: middle;
+  cursor: pointer;
+  font-size: 30px;
+}
+#app .preAndNext {
+  width: 100%;
+  min-height: 100px;
+  max-height: 200px;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+}
+#app .preAndNext .btn {
+  width: 100px;
+  padding: 10px;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid lightgray;
+  outline: none;
+  height: 60px;
+  cursor: pointer;
+}
+#app .preAndNext .next > .btn:hover,
+#app .preAndNext .pre > .btn:hover {
+  border-color: grey;
+  background: #ecf0f1;
+  color: black;
+}
+#app .preAndNext .check > .btn:hover {
+  border-color: lightgreen;
+  background: darkseagreen;
+  color: white;
+}
+/*# sourceMappingURL=index.css.map */

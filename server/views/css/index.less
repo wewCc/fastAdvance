@@ -1,0 +1,130 @@
+@import "common.less";
+@import "alertbox.less";
+
+@width: 500px;
+@height: 600px;
+@radius: 30px;
+@mainColor: whitesmoke;
+@shadowColor: #f1ffbd;
+@areaWidth: 95%;
+@btnRadius: 14px;
+
+#app {
+  width: @width;
+  height: @height;
+  background: @mainColor;
+  border-radius: @radius;
+  box-shadow: 2px 2px 2px 3px @shadowColor;
+  position: relative;
+
+  h2 {
+    text-align: center;
+    padding: 7px 0;
+  }
+
+  .mainArea {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10px;
+
+    .questionArea {
+      width: @areaWidth;
+      min-height: 60px;
+      max-height: 400px;
+      font-size: 30px;
+      line-height: 35px;
+      word-break: break-all;
+    }
+
+    .answerArea {
+      width: @areaWidth;
+      min-height: 30px;
+      max-height: 120px;
+      word-break: break-all;
+      padding: 16px 0;
+      margin: 10px 0;
+
+      & > .choose {
+        display: flex;
+        justify-content: space-around;
+        font-size: 20px;
+        flex-wrap: wrap;
+
+        input[name="single"] {
+          width: 30px;
+          height: 20px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .checkArea {
+      width: @areaWidth;
+      min-height: 60px;
+      max-height: 100px;
+      display: none;
+      .correctStatus{
+        font-size: 30px;
+      }
+      .answerTitle {
+        font-weight: bold;
+        font-size: 15px;
+        vertical-align: middle;
+      }
+
+      .answer {
+        color: red;
+        vertical-align: middle;
+        cursor: pointer;
+        font-size: 30px;
+      }
+    }
+
+  }
+
+  .preAndNext {
+    width: @areaWidth+5%;
+    min-height: 100px;
+    max-height: 200px;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+
+    .btn {
+      width: 100px;
+      padding: 10px;
+      border-radius: @btnRadius;
+      text-align: center;
+      border: 1px solid lightgray;
+      outline: none;
+      height: 60px;
+      cursor: pointer;
+    }
+
+    .next, .pre {
+      & > .btn:hover {
+        .hover(grey, #ecf0f1, black);
+      }
+    }
+
+    .check {
+      & > .btn:hover {
+        .hover(lightgreen, darkseagreen, white);
+      }
+    }
+
+    .hover(@borderColor,@background,@color) {
+      border-color: @borderColor;
+      background: @background;
+      color: @color;
+
+    }
+  }
+}
