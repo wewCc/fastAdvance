@@ -88,11 +88,15 @@
                 if (code === codeStatus.NO_NEXT) {
                     alert("题目已经到尾了","orange")
                     recordStatus.next = code
+                    next.disabled=true
                 } else if (code === codeStatus.NO_PREV) {
                     recordStatus.prev = code
                     alert("题目已经到头了","orange")
+                    prev.disabled=true
                 } else {
                     initRecord()
+                    next.disabled=false
+                    prev.disabled=false
                 }
                 current=code
                 renderHTML(data.data)
