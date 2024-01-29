@@ -105,7 +105,7 @@
         let {question, choose, answer} = data
         questionArea.innerHTML = question
         checkAnswer.innerHTML = answer
-        let matchAll = choose.matchAll(/([A-D])\.(\w+)/gm);
+        let matchAll = choose.matchAll(/([A-Z])\.([^A-Z]+)/gm);
         let arr = []
         for (const matchAllElement of matchAll) {
             arr.push(matchAllElement[0])
