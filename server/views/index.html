@@ -49,6 +49,7 @@
     let alertBox = document.querySelectorAll(".alertBox")
     let prev = document.querySelector(".pre>button")
     let flagAlert = false
+    let current=null
     let chooseSingle = null
     let codeStatus = {
         NO_NEXT: 611,
@@ -85,15 +86,15 @@
             .then(res => {
                 let {code, data} = res
                 if (code === codeStatus.NO_NEXT) {
+                    alert("题目已经到尾了","orange")
                     recordStatus.next = code
                 } else if (code === codeStatus.NO_PREV) {
                     recordStatus.prev = code
+                    alert("题目已经到头了","orange")
                 } else {
                     initRecord()
                 }
-                console.log(res)
-                console.log(data)
-                console.log(data.data)
+                current=code
                 renderHTML(data.data)
             }).catch(err => {
             alert("报错了,请重试", "red")
@@ -105,7 +106,7 @@
         let {question, choose, answer} = data
         questionArea.innerHTML = question
         checkAnswer.innerHTML = answer
-        let matchAll = choose.matchAll(/([A-Z])\.([^A-Z]+)/gm);
+        let matchAll = choose.matchAll(/([A-Z])\.([^\s]+|[\s\S]*?)(?=\s[A-Z]\.|$)/gm);
         let arr = []
         for (const matchAllElement of matchAll) {
             arr.push(matchAllElement[0])
@@ -149,20 +150,11 @@
         checkControl.style.display = "block"
     })
     next.addEventListener("click", () => {
-        if (recordStatus.next === codeStatus.NO_NEXT) {
-            alert("没有下一题了", "orange")
-            //提示
-            return;
-        }
         initDisplay()
         initChoosing()
         fetchData("http://localhost:8080/getQuestion/", "next")
     })
     prev.addEventListener("click", () => {
-        if (recordStatus.prev === codeStatus.NO_PREV) {
-            alert("没有上一题了", "orange")
-            return;
-        }
         initDisplay()
         initChoosing()
         fetchData("http://localhost:8080/getQuestion/", "prev")
