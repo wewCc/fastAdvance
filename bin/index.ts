@@ -1,14 +1,16 @@
+#!/usr/bin/env node
 const express = require("express")
 const path = require("path")
-const router = require("./controller/displayController")
+const router = require("../server/controller/displayController")
 let app = express()
 // @ts-ignore
-const {program, Option} = require('commander');
+const {program} = require('commander');
+const commander = require('commander');
 let version = "1.0.0"
 
 
 const startSever = (questionFilePath: string, answerFilePath: string, port: number = 8080) => {
-    app.use(express.static(path.join(__dirname, "views")))
+    app.use(express.static(path.join(__dirname, "../server/views")))
     app.use(router(questionFilePath, answerFilePath))
 
     app.listen(port, (error: Error) => {
@@ -27,9 +29,9 @@ program
 // 定义命令
 program
     //帮助菜单中隐藏该命令
-    .addOption(new Option('-p, --port <number>', 'port number'))
-    .addOption(new Option('-qf --questionFile <questionFile>', '选择题问题文件'))
-    .addOption(new Option('-af --answerFile <answerFile>', '答案文件'))
+    .addOption(new commander.Option('-p, --port <number>', 'port number'))
+    .addOption(new commander.Option('-qf --questionFile <questionFile>', '选择题问题文件'))
+    .addOption(new commander.Option('-af --answerFile <answerFile>', '答案文件'))
     .action((options: any) => {
         let {port, questionFile, answerFile} = options
         if (!questionFile || !answerFile) {

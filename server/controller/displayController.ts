@@ -32,7 +32,7 @@ module.exports = (questionFilePath:string, answerFilePath:string) => {
         }
     )
 //简单测试
-    router.get("/", (req: Request, resp: any) => {
+    router.get("/", (req: any, resp: any) => {
         resp.setHeader("Content-Type", "text/html")
         let data = readFile("views/index.html", true)
         resp.end(data)

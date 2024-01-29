@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "esnext",
     "sourceMap": true,
-    "lib": ["ESNext","DOM"]
+    "lib": ["ESNext","DOM"],
+    "declaration": true
   },
+  "include": [
+    "server/**/*.ts",
+    "server/*.ts"
+  ],
   "exclude": [
     "node_modules"
   ]
